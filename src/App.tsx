@@ -50,9 +50,14 @@ const App: React.FC = () => {
     const enteredWeight = weightInputRef.current!.value;
     const enteredHeight = heightInputRef.current!.value; // here we use the non-null assertion operator (!) to tell TypeScript that we know that the value is not null or undefined. This is a way to tell TypeScript that we know better than it does. It prevents TypeScript from throwing an error when we try to access the value property of the ref object. If the value is null or undefined, we'll get a runtime error, but we know that it won't be null or undefined because we've already checked for that.
 
-    if (!enteredHeight || !enteredWeight) {
+    if (
+      !enteredHeight ||
+      !enteredWeight ||
+      +enteredHeight <= 0 ||
+      +enteredWeight <= 0
+    ) {
       return;
-    } // here we check if the enteredHeight or enteredWeight is falsy. If either of them is falsy, we return early from the function. This is a way to prevent the function from executing if the user hasn't entered a value for either of the inputs.
+    } // here we check if the enteredHeight or enteredWeight is falsy. If either of them is falsy, we return early from the function. This is a way to prevent the function from executing if the user hasn't entered a value for either of the inputs. We also check if the enteredHeight or enteredWeight is less than or equal to 0. If either of them is less than or equal to 0, we return early from the function. This is a way to prevent the function from executing if the user enters a negative value for either of the inputs.
 
     const bmi = +enteredWeight / (+enteredHeight * +enteredHeight); // here, the + operator converts the string values to numbers. This is a way to tell TypeScript that we know that the values are numbers. It prevents TypeScript from throwing an error when we try to perform a mathematical operation on the values.
     setCalculatedBMI(bmi);
@@ -66,7 +71,7 @@ const App: React.FC = () => {
   return (
     <IonApp>
       <IonHeader>
-        <IonToolbar>
+        <IonToolbar color="primary">
           <IonTitle>BMI Calculator</IonTitle>
         </IonToolbar>
       </IonHeader>
@@ -75,14 +80,22 @@ const App: React.FC = () => {
           <IonRow>
             <IonCol>
               <IonItem>
-                <IonInput label="Your Height" ref={heightInputRef}></IonInput>
+                <IonInput
+                  label="Your Height"
+                  type="number"
+                  ref={heightInputRef}
+                ></IonInput>
               </IonItem>
             </IonCol>
           </IonRow>
           <IonRow>
             <IonCol>
               <IonItem>
-                <IonInput label="Your Weight" ref={weightInputRef}></IonInput>
+                <IonInput
+                  label="Your Weight"
+                  type="number"
+                  ref={weightInputRef}
+                ></IonInput>
               </IonItem>
             </IonCol>
           </IonRow>

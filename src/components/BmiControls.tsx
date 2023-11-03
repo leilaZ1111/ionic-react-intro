@@ -26,3 +26,9 @@ const BmiControls: React.FC<{
 };
 
 export default BmiControls;
+
+// <IonButton onClick={props.onCalculate}>
+// here we use the onCalculate prop as the onClick handler for the Calculate button. The onClick handler is a function that will be executed when the user clicks the button. The function is passed as the value of the onClick prop. The function is executed when the user clicks the button. The function doesn't take any arguments and doesn't return anything.
+
+// <IonButton onClick={props.onReset}>
+// here we use the onReset prop as the onClick handler for the Reset button. The onClick handler is a function that will be executed when the user clicks the button. The function is passed as the value of the onClick prop. The function is executed when the user clicks the button. The function doesn't take any arguments and doesn't return anything.

@@ -2,14 +2,10 @@ import { Redirect, Route } from 'react-router-dom';
 import React, { useRef, useState } from 'react';
 import {
   IonApp,
-  IonButton,
-  IonCard,
-  IonCardContent,
   IonCol,
   IonContent,
   IonGrid,
   IonHeader,
-  IonIcon,
   IonInput,
   IonItem,
   IonLabel,
@@ -19,7 +15,9 @@ import {
   setupIonicReact,
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import { calculatorOutline, refreshOutline } from 'ionicons/icons';
+
+import BmiControls from './components/BmiControls';
+import BmiResult from './components/BmiResult';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -88,31 +86,8 @@ const App: React.FC = () => {
               </IonItem>
             </IonCol>
           </IonRow>
-          <IonRow>
-            <IonCol className="ion-text-left">
-              <IonButton onClick={calculateBMI}>
-                <IonIcon slot="start" icon={calculatorOutline} />
-                Calculate
-              </IonButton>
-            </IonCol>
-            <IonCol className="ion-text-right">
-              <IonButton onClick={resetInputs}>
-                <IonIcon slot="start" icon={refreshOutline} />
-                Reset
-              </IonButton>
-            </IonCol>
-          </IonRow>
-          {calculatedBMI && (
-            <IonRow>
-              <IonCol>
-                <IonCard>
-                  <IonCardContent>
-                    <h2>{calculatedBMI}</h2>
-                  </IonCardContent>
-                </IonCard>
-              </IonCol>
-            </IonRow>
-          )}
+          <BmiControls onCalculate={calculateBMI} onReset={resetInputs} />
+          {calculatedBMI && <BmiResult result={calculatedBMI} />}
         </IonGrid>
       </IonContent>
     </IonApp>
@@ -129,4 +104,6 @@ export default App;
 // 2. Create a Ref Object: const myRef = useRef(initialValue) or const weightInputRef = useRef<HTMLIonInputElement>(null); => initialValue (optional): You can provide an initial value if you want. This is particularly useful for initializing the ref to a DOM element, as in the case of useRef(null).
 // 3. Accessing the Current Value: You can access the current value of the ref using myRef.current. This is a property of the ref object that holds the current value. You can also assign new values to it.
 
-// {calculatedBMI && ( <IonRow> ... </IonRow> /// here we use the && operator to conditionally render the card. The && operator is a way to conditionally render elements in React. It's a way to say that if the condition is true, render the element. If the condition is false, don't render the element. In this case, we're saying that if calculatedBMI is truthy, render the card. If calculatedBMI is falsy, don't render the card. This is a way to prevent the card from being rendered when the user hasn't calculated the BMI yet.
+// ////// <BmiControls onCalculate={calculateBMI} onReset={resetInputs} /> ///////// here we use the BmiControls component. We pass the calculateBMI function as the onCalculate prop and the resetInputs function as the onReset prop. Both props are functions that don't take any argument and don't return anything.
+
+// ////// {calculatedBMI && ( <IonRow> ... </IonRow> ////// here we use the && operator to conditionally render the card. The && operator is a way to conditionally render elements in React. It's a way to say that if the condition is true, render the element. If the condition is false, don't render the element. In this case, we're saying that if calculatedBMI is truthy, render the card. If calculatedBMI is falsy, don't render the card. This is a way to prevent the card from being rendered when the user hasn't calculated the BMI yet.

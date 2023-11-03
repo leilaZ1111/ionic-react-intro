@@ -13,6 +13,7 @@ import {
   IonTitle,
   IonToolbar,
   setupIonicReact,
+  IonAlert,
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 
@@ -41,7 +42,9 @@ import './theme/variables.css';
 setupIonicReact();
 
 const App: React.FC = () => {
-  const [calculatedBMI, setCalculatedBMI] = useState<number>();
+  const [calculatedBMI, setCalculatedBMI] = useState<number>(); // here we use the useState Hook to create a state variable called calculatedBMI. The state variable is initialized to undefined. We also specify the type of the state variable. In this case, we want the state variable to be a number, so we specify the type as number. We use the useState Hook to create the state variable. The useState Hook returns an array with two elements. The first element is the state variable. The second element is a function that we can use to update the state variable. We use array destructuring to assign the elements of the array to the calculatedBMI variable and the setCalculatedBMI function.
+
+  const [error, setError] = useState<string>(); // here we use the useState Hook to create a state variable called error. The state variable is initialized to undefined. We also specify the type of the state variable. In this case, we want the state variable to be a string, so we specify the type as string. We use the useState Hook to create the state variable. The useState Hook returns an array with two elements. The first element is the state variable. The second element is a function that we can use to update the state variable. We use array destructuring to assign the elements of the array to the error variable and the setError function.
 
   const weightInputRef = useRef<HTMLIonInputElement>(null); // see the comment at the end for useRef, a react hook
   const heightInputRef = useRef<HTMLIonInputElement>(null); // here we create two ref objects, one for each input. We use the useRef Hook to create the ref objects. We also specify the type of the ref object. In this case, we want to access the value property of the ref object, so we specify the type as HTMLIonInputElement. This is a type that's provided by Ionic React. It's a type that represents an HTML input element. We also initialize the ref objects to null. This is because the ref objects are initially null. We'll assign the ref objects to the inputs later.
@@ -56,6 +59,7 @@ const App: React.FC = () => {
       +enteredHeight <= 0 ||
       +enteredWeight <= 0
     ) {
+      setError('Please enter a valid (non-negative) input number.');
       return;
     } // here we check if the enteredHeight or enteredWeight is falsy. If either of them is falsy, we return early from the function. This is a way to prevent the function from executing if the user hasn't entered a value for either of the inputs. We also check if the enteredHeight or enteredWeight is less than or equal to 0. If either of them is less than or equal to 0, we return early from the function. This is a way to prevent the function from executing if the user enters a negative value for either of the inputs.
 
@@ -68,42 +72,53 @@ const App: React.FC = () => {
     heightInputRef.current!.value = '';
   };
 
+  const clearError = () => {
+    setError('');
+  };
+
   return (
-    <IonApp>
-      <IonHeader>
-        <IonToolbar color="primary">
-          <IonTitle>BMI Calculator</IonTitle>
-        </IonToolbar>
-      </IonHeader>
-      <IonContent className="ion-padding">
-        <IonGrid>
-          <IonRow>
-            <IonCol>
-              <IonItem>
-                <IonInput
-                  label="Your Height"
-                  type="number"
-                  ref={heightInputRef}
-                ></IonInput>
-              </IonItem>
-            </IonCol>
-          </IonRow>
-          <IonRow>
-            <IonCol>
-              <IonItem>
-                <IonInput
-                  label="Your Weight"
-                  type="number"
-                  ref={weightInputRef}
-                ></IonInput>
-              </IonItem>
-            </IonCol>
-          </IonRow>
-          <BmiControls onCalculate={calculateBMI} onReset={resetInputs} />
-          {calculatedBMI && <BmiResult result={calculatedBMI} />}
-        </IonGrid>
-      </IonContent>
-    </IonApp>
+    <React.Fragment>
+      <IonAlert
+        isOpen={!!error}
+        message={error}
+        buttons={[{ text: 'Ok', handler: (clearError) => {} }]}
+      />
+      <IonApp>
+        <IonHeader>
+          <IonToolbar color="primary">
+            <IonTitle>BMI Calculator</IonTitle>
+          </IonToolbar>
+        </IonHeader>
+        <IonContent className="ion-padding">
+          <IonGrid>
+            <IonRow>
+              <IonCol>
+                <IonItem>
+                  <IonInput
+                    label="Your Height"
+                    type="number"
+                    ref={heightInputRef}
+                  ></IonInput>
+                </IonItem>
+              </IonCol>
+            </IonRow>
+            <IonRow>
+              <IonCol>
+                <IonItem>
+                  <IonInput
+                    label="Your Weight"
+                    type="number"
+                    ref={weightInputRef}
+                  ></IonInput>
+                </IonItem>
+              </IonCol>
+            </IonRow>
+            <BmiControls onCalculate={calculateBMI} onReset={resetInputs} />
+            {calculatedBMI && <BmiResult result={calculatedBMI} />}
+          </IonGrid>
+        </IonContent>
+      </IonApp>
+    </React.Fragment>
   );
 };
 
@@ -117,6 +132,8 @@ export default App;
 // 2. Create a Ref Object: const myRef = useRef(initialValue) or const weightInputRef = useRef<HTMLIonInputElement>(null); => initialValue (optional): You can provide an initial value if you want. This is particularly useful for initializing the ref to a DOM element, as in the case of useRef(null).
 // 3. Accessing the Current Value: You can access the current value of the ref using myRef.current. This is a property of the ref object that holds the current value. You can also assign new values to it.
 
+// the <React.Fragment> element is a way to group elements without a parent element. It's a way to group elements without adding an extra node to the DOM (Document Object Model). It's a react requirement that you can't return multiple elements from a component. You can only return one root element. The <React.Fragment> element is a way to return multiple elements without adding an extra node to the DOM. Here it is to group the <IonAlert> element and the <IonApp> element. The <IonAlert> element is a component that displays an alert. The <IonApp> element is the root element of the app.
+
 // ////// <BmiControls onCalculate={calculateBMI} onReset={resetInputs} /> ///////// here we use the BmiControls component. We pass the calculateBMI function as the onCalculate prop and the resetInputs function as the onReset prop. Both props are functions that don't take any argument and don't return anything.
 
-// ////// {calculatedBMI && ( <IonRow> ... </IonRow> ////// here we use the && operator to conditionally render the card. The && operator is a way to conditionally render elements in React. It's a way to say that if the condition is true, render the element. If the condition is false, don't render the element. In this case, we're saying that if calculatedBMI is truthy, render the card. If calculatedBMI is falsy, don't render the card. This is a way to prevent the card from being rendered when the user hasn't calculated the BMI yet.
+// ////// {calculatedBMI && ( <IonRow> ... </IonRow> ////// here we use the && operator to conditionally render the card. The && operator is a way to conditionally render elements in React. It's a way to say that if the condition is true, render the element. If the condition is false, don't render the element. In this case, we're saying that if calculatedBMI is truthy, render the card. If calculatedBMI is falsy, don't render the card. This is a way to prevent the card from being rendered when the user hasn't calculated the BMI yet. The card is only rendered when the user has calculated the BMI.

@@ -19,6 +19,7 @@ import { IonReactRouter } from '@ionic/react-router';
 
 import BmiControls from './components/BmiControls';
 import BmiResult from './components/BmiResult';
+import InptutControls from './components/inputControls';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -38,6 +39,7 @@ import '@ionic/react/css/display.css';
 
 /* Theme variables */
 import './theme/variables.css';
+import InptutControl from './components/inputControls';
 
 setupIonicReact();
 
@@ -91,6 +93,11 @@ const App: React.FC = () => {
         </IonHeader>
         <IonContent className="ion-padding">
           <IonGrid>
+            <IonRow>
+              <IonCol>
+                <InptutControl selectedValue="mkg" />
+              </IonCol>
+            </IonRow>
             <IonRow>
               <IonCol>
                 <IonItem>

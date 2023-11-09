@@ -19,7 +19,7 @@ import { IonReactRouter } from '@ionic/react-router';
 
 import BmiControls from './components/BmiControls';
 import BmiResult from './components/BmiResult';
-import InptutControls from './components/inputControls';
+import InptutControl from './components/inputControls';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -39,17 +39,16 @@ import '@ionic/react/css/display.css';
 
 /* Theme variables */
 import './theme/variables.css';
-import InptutControl from './components/inputControls';
 
 setupIonicReact();
 
 const App: React.FC = () => {
-  const [calculatedBMI, setCalculatedBMI] = useState<number>(); // here we use the useState Hook to create a state variable called calculatedBMI. The state variable is initialized to undefined. We also specify the type of the state variable. In this case, we want the state variable to be a number, so we specify the type as number. We use the useState Hook to create the state variable. The useState Hook returns an array with two elements. The first element is the state variable. The second element is a function that we can use to update the state variable. We use array destructuring to assign the elements of the array to the calculatedBMI variable and the setCalculatedBMI function.
+  const [calculatedBMI, setCalculatedBMI] = useState<number>(); // see (1)
+  const [error, setError] = useState<string>(); //  see (2)
+  const [calcUnits, setCalcUnits] = useState<'mkg' | 'ftlbs'>('mkg'); // see (3)
 
-  const [error, setError] = useState<string>(); // here we use the useState Hook to create a state variable called error. The state variable is initialized to undefined. We also specify the type of the state variable. In this case, we want the state variable to be a string, so we specify the type as string. We use the useState Hook to create the state variable. The useState Hook returns an array with two elements. The first element is the state variable. The second element is a function that we can use to update the state variable. We use array destructuring to assign the elements of the array to the error variable and the setError function.
-
-  const weightInputRef = useRef<HTMLIonInputElement>(null); // see the comment at the end for useRef, a react hook
-  const heightInputRef = useRef<HTMLIonInputElement>(null); // here we create two ref objects, one for each input. We use the useRef Hook to create the ref objects. We also specify the type of the ref object. In this case, we want to access the value property of the ref object, so we specify the type as HTMLIonInputElement. This is a type that's provided by Ionic React. It's a type that represents an HTML input element. We also initialize the ref objects to null. This is because the ref objects are initially null. We'll assign the ref objects to the inputs later.
+  const weightInputRef = useRef<HTMLIonInputElement>(null); // see (4) the comment at the end for useRef, a react hook
+  const heightInputRef = useRef<HTMLIonInputElement>(null); // see (5)
 
   const calculateBMI = () => {
     const enteredWeight = weightInputRef.current!.value;
@@ -78,6 +77,10 @@ const App: React.FC = () => {
     setError('');
   };
 
+  const selectCalcUnitHandler = (selectedValue: 'mkg' | 'ftlbs') => {
+    setCalcUnits(selectedValue);
+  };
+
   return (
     <React.Fragment>
       <IonAlert
@@ -95,7 +98,10 @@ const App: React.FC = () => {
           <IonGrid>
             <IonRow>
               <IonCol>
-                <InptutControl selectedValue="mkg" />
+                <InptutControl
+                  selectedValue={calcUnits}
+                  onSelectedValue={selectCalcUnitHandler}
+                />
               </IonCol>
             </IonRow>
             <IonRow>
@@ -133,11 +139,19 @@ export default App;
 
 // The IonIcon component is self-closing, so it doesn't need a closing tag.
 
-// useRef is a Hook in React that allows you to create a mutable ref object. Refs are a way to access the properties or the DOM (Document Object Model) elements of a React component directly. You can think of useRef as a way to "remember" values between renders without causing a re-render of the component.
+//  (1)  here we use the useState Hook to create a state variable called calculatedBMI. The state variable is initialized to undefined. We also specify the type of the state variable. In this case, we want the state variable to be a number, so we specify the type as number. We use the useState Hook to create the state variable. The useState Hook returns an array with two elements. The first element is the state variable. The second element is a function that we can use to update the state variable. We use array destructuring to assign the elements of the array to the calculatedBMI variable and the setCalculatedBMI function.
+
+//  (2)  here we use the useState Hook to create a state variable called error. The state variable is initialized to undefined. We also specify the type of the state variable. In this case, we want the state variable to be a string, so we specify the type as string. We use the useState Hook to create the state variable. The useState Hook returns an array with two elements. The first element is the state variable. The second element is a function that we can use to update the state variable. We use array destructuring to assign the elements of the array to the error variable and the setError function.
+
+//  (3)
+
+// (4)  useRef is a Hook in React that allows you to create a mutable ref object. Refs are a way to access the properties or the DOM (Document Object Model) elements of a React component directly. You can think of useRef as a way to "remember" values between renders without causing a re-render of the component.
 // Here's how you can use useRef:
 // 1. Import useRef: You've already imported useRef in your code with import React, { useRef } from 'react';.
 // 2. Create a Ref Object: const myRef = useRef(initialValue) or const weightInputRef = useRef<HTMLIonInputElement>(null); => initialValue (optional): You can provide an initial value if you want. This is particularly useful for initializing the ref to a DOM element, as in the case of useRef(null).
 // 3. Accessing the Current Value: You can access the current value of the ref using myRef.current. This is a property of the ref object that holds the current value. You can also assign new values to it.
+
+// (5)
 
 // the <React.Fragment> element is a way to group elements without a parent element. It's a way to group elements without adding an extra node to the DOM (Document Object Model). It's a react requirement that you can't return multiple elements from a component. You can only return one root element. The <React.Fragment> element is a way to return multiple elements without adding an extra node to the DOM. Here it is to group the <IonAlert> element and the <IonApp> element. The <IonAlert> element is a component that displays an alert. The <IonApp> element is the root element of the app.
 

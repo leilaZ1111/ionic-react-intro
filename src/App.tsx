@@ -64,7 +64,13 @@ const App: React.FC = () => {
       return;
     } // here we check if the enteredHeight or enteredWeight is falsy. If either of them is falsy, we return early from the function. This is a way to prevent the function from executing if the user hasn't entered a value for either of the inputs. We also check if the enteredHeight or enteredWeight is less than or equal to 0. If either of them is less than or equal to 0, we return early from the function. This is a way to prevent the function from executing if the user enters a negative value for either of the inputs.
 
-    const bmi = +enteredWeight / (+enteredHeight * +enteredHeight); // here, the + operator converts the string values to numbers. This is a way to tell TypeScript that we know that the values are numbers. It prevents TypeScript from throwing an error when we try to perform a mathematical operation on the values.
+    const weightConversionFactor = calcUnits === 'ftlbs' ? 2.2 : 1;
+    const heightConversionFactor = calcUnits === 'ftlbs' ? 3.28 : 1;
+
+    const weight = +enteredWeight / weightConversionFactor;
+    const height = +enteredHeight / heightConversionFactor; // here, the + operator converts the string values to numbers. This is a way to tell TypeScript that we know that the values are numbers. It prevents TypeScript from throwing an error when we try to perform a mathematical operation on the values.
+
+    const bmi = weight / (height * height); //
     setCalculatedBMI(bmi);
   };
 
@@ -107,22 +113,20 @@ const App: React.FC = () => {
             <IonRow>
               <IonCol>
                 <IonItem>
-                  <IonInput
-                    label="Your Height"
-                    type="number"
-                    ref={heightInputRef}
-                  ></IonInput>
+                  <IonLabel position="floating">
+                    Your Height ({calcUnits === 'mkg' ? 'meters' : 'feet'})
+                  </IonLabel>
+                  <IonInput type="number" ref={heightInputRef}></IonInput>
                 </IonItem>
               </IonCol>
             </IonRow>
             <IonRow>
               <IonCol>
                 <IonItem>
-                  <IonInput
-                    label="Your Weight"
-                    type="number"
-                    ref={weightInputRef}
-                  ></IonInput>
+                  <IonLabel position="floating">
+                    Your Weight ({calcUnits === 'mkg' ? 'kg' : 'lbs'})
+                  </IonLabel>
+                  <IonInput type="number" ref={weightInputRef}></IonInput>
                 </IonItem>
               </IonCol>
             </IonRow>

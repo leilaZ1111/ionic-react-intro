@@ -103,8 +103,14 @@ const App: React.FC = () => {
         <IonContent className="ion-padding">
           <IonGrid>
             <IonRow>
-              <IonCol>
-                <IonGrid>
+              <IonCol
+                sizeSm="8"
+                offsetSm="2"
+                sizeMd="6"
+                offsetMd="3"
+                className="ion-no-padding"
+              >
+                <IonGrid className="ion-no-padding">
                   <IonRow>
                     <IonCol>
                       <InptutControl

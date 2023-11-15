@@ -1,0 +1,9 @@
+#result h2 {
+  font-size: 1rem;
+}
+
+#result h3 {
+  font-size: 2rem;
+  font-weight: bold;
+  margin: 1.5rem 0;
+}

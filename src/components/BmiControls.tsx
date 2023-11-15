@@ -10,13 +10,13 @@ const BmiControls: React.FC<{
   return (
     <IonRow>
       <IonCol className="ion-text-left">
-        <IonButton onClick={props.onCalculate}>
+        <IonButton color="secondary" onClick={props.onCalculate}>
           <IonIcon slot="start" icon={calculatorOutline} />
           Calculate
         </IonButton>
       </IonCol>
       <IonCol className="ion-text-right">
-        <IonButton onClick={props.onReset}>
+        <IonButton color="secondary" onClick={props.onReset}>
           <IonIcon slot="start" icon={refreshOutline} />
           Reset
         </IonButton>

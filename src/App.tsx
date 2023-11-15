@@ -104,34 +104,44 @@ const App: React.FC = () => {
           <IonGrid>
             <IonRow>
               <IonCol>
-                <InptutControl
-                  selectedValue={calcUnits}
-                  onSelectedValue={selectCalcUnitHandler}
-                />
+                <IonGrid>
+                  <IonRow>
+                    <IonCol>
+                      <InptutControl
+                        selectedValue={calcUnits}
+                        onSelectedValue={selectCalcUnitHandler}
+                      />
+                    </IonCol>
+                  </IonRow>
+                  <IonRow>
+                    <IonCol>
+                      <IonItem>
+                        <IonLabel position="floating">
+                          Your Height ({calcUnits === 'mkg' ? 'meters' : 'feet'}
+                          )
+                        </IonLabel>
+                        <IonInput type="number" ref={heightInputRef}></IonInput>
+                      </IonItem>
+                    </IonCol>
+                  </IonRow>
+                  <IonRow>
+                    <IonCol>
+                      <IonItem>
+                        <IonLabel position="floating">
+                          Your Weight ({calcUnits === 'mkg' ? 'kg' : 'lbs'})
+                        </IonLabel>
+                        <IonInput type="number" ref={weightInputRef}></IonInput>
+                      </IonItem>
+                    </IonCol>
+                  </IonRow>
+                  <BmiControls
+                    onCalculate={calculateBMI}
+                    onReset={resetInputs}
+                  />
+                  {calculatedBMI && <BmiResult result={calculatedBMI} />}
+                </IonGrid>
               </IonCol>
             </IonRow>
-            <IonRow>
-              <IonCol>
-                <IonItem>
-                  <IonLabel position="floating">
-                    Your Height ({calcUnits === 'mkg' ? 'meters' : 'feet'})
-                  </IonLabel>
-                  <IonInput type="number" ref={heightInputRef}></IonInput>
-                </IonItem>
-              </IonCol>
-            </IonRow>
-            <IonRow>
-              <IonCol>
-                <IonItem>
-                  <IonLabel position="floating">
-                    Your Weight ({calcUnits === 'mkg' ? 'kg' : 'lbs'})
-                  </IonLabel>
-                  <IonInput type="number" ref={weightInputRef}></IonInput>
-                </IonItem>
-              </IonCol>
-            </IonRow>
-            <BmiControls onCalculate={calculateBMI} onReset={resetInputs} />
-            {calculatedBMI && <BmiResult result={calculatedBMI} />}
           </IonGrid>
         </IonContent>
       </IonApp>
